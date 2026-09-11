@@ -1,0 +1,273 @@
+### EF Core Examples — готові запити
+### Відкрий у Visual Studio / Rider / VS Code (розширення "REST Client").
+### Спочатку запусти застосунок: dotnet run
+
+@host = http://localhost:5299
+
+############################################################
+# Глава 1. Вступ до EF Core
+############################################################
+
+### 1.2 / 1.5 — CRUD: усі користувачі
+GET {{host}}/api/ch01/first-app/users
+
+### 1.5 — створити користувача
+POST {{host}}/api/ch01/first-app/users
+Content-Type: application/json
+
+{ "name": "Nina", "age": 22 }
+
+### 1.5 — оновити користувача
+PUT {{host}}/api/ch01/first-app/users/1
+Content-Type: application/json
+
+{ "name": "Tom Updated", "age": 34 }
+
+### 1.5 — видалити користувача
+DELETE {{host}}/api/ch01/first-app/users/2
+
+### 1.5 — повернути дані глави до початкового стану
+POST {{host}}/api/ch01/first-app/reset
+
+### 1.3 — читання наявної БД через "згенерований" контекст
+GET {{host}}/api/ch01/existing-database/users
+
+### 1.4 — чи є з'єднання з БД
+GET {{host}}/api/ch01/database/can-connect
+
+### 1.4 — SQL-скрипт створення схеми
+GET {{host}}/api/ch01/database/create-script
+
+### 1.4 — видалити базу пісочниці
+POST {{host}}/api/ch01/database/ensure-deleted
+
+### 1.4 — створити її знову
+POST {{host}}/api/ch01/database/ensure-created
+
+### 1.6 — інформація про підключення
+GET {{host}}/api/ch01/connection/info
+
+### 1.7 — лог SQL (параметри як "?")
+GET {{host}}/api/ch01/logging/capture
+
+### 1.7 — лог SQL зі значеннями параметрів (EnableSensitiveDataLogging)
+GET {{host}}/api/ch01/logging/capture-sensitive
+
+### 1.8 — застосовані міграції
+GET {{host}}/api/ch01/migrations/applied
+
+### 1.8 — відкотити до першої міграції
+POST {{host}}/api/ch01/migrations/revert-to-initial
+
+### 1.8 — невиконані міграції
+GET {{host}}/api/ch01/migrations/pending
+
+### 1.8 — застосувати міграції
+POST {{host}}/api/ch01/migrations/migrate
+
+### 1.8 — SQL-скрипт міграцій
+GET {{host}}/api/ch01/migrations/script
+
+############################################################
+# Глава 3. Створення моделей
+############################################################
+
+### 3.2 — усі сутності контексту
+GET {{host}}/api/ch03/model-definition/entities
+
+### 3.3 — які властивості не зберігаються ([NotMapped])
+GET {{host}}/api/ch03/model-definition/not-mapped
+
+### 3.4 — сутності, створені через конструктор
+GET {{host}}/api/ch03/model-definition/articles
+
+### 3.5 — backing field: лічильник переглядів (виклич кілька разів)
+POST {{host}}/api/ch03/model-definition/articles/1/views
+
+### 3.6 — як Product ліг на таблицю
+GET {{host}}/api/ch03/model-mapping/product
+
+### 3.7 — обов'язкові / необов'язкові властивості
+GET {{host}}/api/ch03/model-mapping/required-optional
+
+### 3.6 — DDL-скрипт схеми глави
+GET {{host}}/api/ch03/model-mapping/create-script
+
+### 3.8 — ключі всіх сутностей
+GET {{host}}/api/ch03/keys-and-indexes/keys
+
+### 3.9 — індекси всіх сутностей
+GET {{host}}/api/ch03/keys-and-indexes/indexes
+
+### 3.8 — порушити альтернативний ключ (виклич двічі)
+POST {{host}}/api/ch03/keys-and-indexes/customers
+Content-Type: application/json
+
+{ "fullName": "New Person", "email": "tom@example.com", "phone": null }
+
+### 3.10 — генерація значень: створити товар
+POST {{host}}/api/ch03/value-generation/products
+Content-Type: application/json
+
+{ "name": "Webcam", "price": 2100, "sku": "WC-100" }
+
+### 3.11 — порушити CHECK-обмеження (від'ємна ціна)
+POST {{host}}/api/ch03/value-generation/products/invalid-price
+
+### 3.10 — метадані генерації значень
+GET {{host}}/api/ch03/value-generation/metadata
+
+### 3.13 — початкові дані (HasData)
+GET {{host}}/api/ch03/seeding/settings
+
+### 3.12 — категорії (IEntityTypeConfiguration)
+GET {{host}}/api/ch03/seeding/categories
+
+### 3.13 — уміст усіх викликів HasData
+GET {{host}}/api/ch03/seeding/seed-metadata
+
+############################################################
+# Глава 4. Відношення між моделями
+############################################################
+
+### 4.1 / 4.2 — зовнішній ключ і навігації Post → Blog
+GET {{host}}/api/ch04/one-to-many/foreign-keys
+
+### 4.8 — блоги з кількістю дописів
+GET {{host}}/api/ch04/one-to-many/blogs
+
+### 4.8 — один блог із дописами
+GET {{host}}/api/ch04/one-to-many/blogs/1
+
+### 4.2 — додати допис до блогу
+POST {{host}}/api/ch04/one-to-many/blogs/1/posts
+Content-Type: application/json
+
+{ "title": "New post via API" }
+
+### 4.7 — користувачі та їхні профілі (один до одного)
+GET {{host}}/api/ch04/one-to-one/users
+
+### 4.7 — створити профіль (повтор → помилка унікальності)
+POST {{host}}/api/ch04/one-to-one/users/1/profile
+Content-Type: application/json
+
+{ "bio": "Full-stack developer", "website": null }
+
+### 4.9 — студенти з курсами
+GET {{host}}/api/ch04/many-to-many/students
+
+### 4.9 — проміжна таблиця з датою запису
+GET {{host}}/api/ch04/many-to-many/enrollments
+
+### 4.9 — записати студента на курс
+POST {{host}}/api/ch04/many-to-many/enroll
+Content-Type: application/json
+
+{ "studentId": 1, "courseId": 3 }
+
+### 4.3 — поведінка при видаленні для всіх зв'язків
+GET {{host}}/api/ch04/cascade-delete/behaviors
+
+### 4.3 — Cascade: видалити блог разом із дописами
+DELETE {{host}}/api/ch04/cascade-delete/blogs/1
+
+### 4.3 — SetNull: видалити компанію
+DELETE {{host}}/api/ch04/cascade-delete/companies/1
+
+### 4.3 — Restrict: спроба видалити відділ із проєктами (помилка)
+DELETE {{host}}/api/ch04/cascade-delete/departments/1
+
+### 4.3 — відновити дані глави
+POST {{host}}/api/ch04/cascade-delete/reset
+
+### 4.4 — Include (JOIN)
+GET {{host}}/api/ch04/loading/include
+
+### 4.4 — ThenInclude
+GET {{host}}/api/ch04/loading/then-include
+
+### 4.4 — фільтрований Include
+GET {{host}}/api/ch04/loading/filtered-include
+
+### 4.5 — explicit loading (два запити)
+GET {{host}}/api/ch04/loading/explicit/1
+
+### 4.6 — lazy loading (проблема N+1)
+GET {{host}}/api/ch04/lazy-loading/teams
+
+### 4.6 — те саме через Include (один запит)
+GET {{host}}/api/ch04/lazy-loading/teams-eager
+
+### 4.10 — власні типи: замовлення з адресою та позиціями
+GET {{host}}/api/ch04/owned-types/orders
+
+### 4.10 — де зберігаються власні типи
+GET {{host}}/api/ch04/owned-types/storage
+
+### 4.11 — комплексний тип Address
+GET {{host}}/api/ch04/complex-types/customers
+
+### 4.12 — ієрархія працівників (дерево)
+GET {{host}}/api/ch04/hierarchical/tree
+
+### 4.12 — ланцюжок керівників
+GET {{host}}/api/ch04/hierarchical/employees/3/chain
+
+############################################################
+# Глава 6. Запити та LINQ to Entities
+############################################################
+
+### 6.2 — Where з параметрами
+GET {{host}}/api/ch06/filtering/where?minAge=30&position=Developer
+
+### 6.2 — First проти Single
+GET {{host}}/api/ch06/filtering/first-vs-single
+
+### 6.2 — Skip / Take (посторінково)
+GET {{host}}/api/ch06/filtering/paging?page=2&pageSize=3
+
+### 6.3 — OrderBy + ThenByDescending
+GET {{host}}/api/ch06/sorting-projection/order-by
+
+### 6.3 — проєкція у DTO
+GET {{host}}/api/ch06/sorting-projection/projection-dto
+
+### 6.4 — Join за ключами
+GET {{host}}/api/ch06/join-grouping/join
+
+### 6.4 — GroupBy з агрегатом
+GET {{host}}/api/ch06/join-grouping/group-by
+
+### 6.5 — Intersect (посади в обох компаніях)
+GET {{host}}/api/ch06/set-operations/intersect
+
+### 6.5 — Except
+GET {{host}}/api/ch06/set-operations/except
+
+### 6.6 — агрегати по зарплатах
+GET {{host}}/api/ch06/aggregation/salary
+
+### 6.7 — AsNoTracking
+GET {{host}}/api/ch06/tracking/no-tracking
+
+### 6.9 — фільтр у SQL (IQueryable)
+GET {{host}}/api/ch06/query-execution/iqueryable
+
+### 6.9 — фільтр у пам'яті (після AsEnumerable)
+GET {{host}}/api/ch06/query-execution/ienumerable
+
+### 6.10 — глобальний фільтр запитів
+GET {{host}}/api/ch06/query-filters/default
+
+### 6.10 — IgnoreQueryFilters
+GET {{host}}/api/ch06/query-filters/ignored
+
+### 6.11 — ExecuteUpdate: підняти зарплату розробникам
+POST {{host}}/api/ch06/bulk-operations/raise-salary?position=Developer&amount=500
+
+### 6.11 — ExecuteDelete: видалити товари не в наявності
+POST {{host}}/api/ch06/bulk-operations/delete-out-of-stock
+
+### 6.11 — відновити дані глави
+POST {{host}}/api/ch06/bulk-operations/reset
