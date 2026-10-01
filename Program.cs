@@ -2,7 +2,10 @@ using EfCoreExamples.Chapter01_Introduction;
 using EfCoreExamples.Chapter01_Introduction.ScaffoldedLike;
 using EfCoreExamples.Chapter03_Models;
 using EfCoreExamples.Chapter04_Relationships;
+using EfCoreExamples.Chapter05_Inheritance;
 using EfCoreExamples.Chapter06_Queries;
+using EfCoreExamples.Chapter07_Sql;
+using EfCoreExamples.Chapter08_Advanced;
 using EfCoreExamples.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
@@ -69,9 +72,21 @@ builder.Services.AddDbContext<LazyLoadingContext>(options => options
     .UseLazyLoadingProxies()
     .UseSqlServer(connectionStrings["Ch04Lazy"]));
 
+// Глава 5. Успадкування (TPH / TPT / TPC).
+builder.Services.AddDbContext<InheritanceContext>(options =>
+    options.UseSqlServer(connectionStrings["Ch05"]));
+
 // Глава 6. Запити та LINQ to Entities.
 builder.Services.AddDbContext<QueriesContext>(options =>
     options.UseSqlServer(connectionStrings["Ch06"]));
+
+// Глава 7. SQL в EF Core.
+builder.Services.AddDbContext<SqlContext>(options =>
+    options.UseSqlServer(connectionStrings["Ch07"]));
+
+// Глава 8. Додаткові можливості.
+builder.Services.AddDbContext<AdvancedContext>(options =>
+    options.UseSqlServer(connectionStrings["Ch08"]));
 
 var app = builder.Build();
 

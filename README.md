@@ -45,13 +45,13 @@ dotnet run
 | Глава | Тема | Стан | Деталі |
 |---|---|---|---|
 | 1 | Вступ до EF Core | ✅ готово | [Chapter01_Introduction/README.md](Chapter01_Introduction/README.md) |
-| 2 | Провайдери баз даних | 🔜 заплановано | — |
+| 2 | Провайдери баз даних | ✅ готово | [Chapter02_Providers/README.md](Chapter02_Providers/README.md) |
 | 3 | Створення моделей | ✅ готово | [Chapter03_Models/README.md](Chapter03_Models/README.md) |
 | 4 | Відношення між моделями | ✅ готово | [Chapter04_Relationships/README.md](Chapter04_Relationships/README.md) |
-| 5 | Успадкування (TPH / TPT / TPC) | 🔜 заплановано | — |
+| 5 | Успадкування (TPH / TPT / TPC) | ✅ готово | [Chapter05_Inheritance/README.md](Chapter05_Inheritance/README.md) |
 | 6 | Запити та LINQ to Entities | ✅ готово | [Chapter06_Queries/README.md](Chapter06_Queries/README.md) |
-| 7 | SQL в EF Core (процедури, функції) | 🔜 заплановано | — |
-| 8 | Додаткові статті (паралелізм тощо) | 🔜 заплановано | — |
+| 7 | SQL в EF Core (процедури, функції) | ✅ готово | [Chapter07_Sql/README.md](Chapter07_Sql/README.md) |
+| 8 | Додаткові статті (паралелізм тощо) | ✅ готово | [Chapter08_Advanced/README.md](Chapter08_Advanced/README.md) |
 
 У Scalar ендпоінти згруповані за главами (тег `Глава N — ...`).
 

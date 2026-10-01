@@ -69,6 +69,19 @@ POST {{host}}/api/ch01/migrations/migrate
 GET {{host}}/api/ch01/migrations/script
 
 ############################################################
+# Глава 2. Провайдери баз даних
+############################################################
+
+### 2.1 — інформація про поточний провайдер (SQL Server)
+GET {{host}}/api/ch02/providers/current
+
+### 2.1-2.3 — каталог провайдерів (SQL Server, MySQL, PostgreSQL, SQLite)
+GET {{host}}/api/ch02/providers/catalog
+
+### 2.1 — параметри стійкості підключення (EnableRetryOnFailure)
+GET {{host}}/api/ch02/providers/resilience
+
+############################################################
 # Глава 3. Створення моделей
 ############################################################
 
@@ -215,6 +228,73 @@ GET {{host}}/api/ch04/hierarchical/tree
 GET {{host}}/api/ch04/hierarchical/employees/3/chain
 
 ############################################################
+# Глава 5. Успадкування (TPH / TPT / TPC)
+############################################################
+
+### 5.1 — TPH: поліморфний запит усіх користувачів
+GET {{host}}/api/ch05/tph/all
+
+### 5.1 — TPH: фільтрація працівників OfType<EmployeeTph>()
+GET {{host}}/api/ch05/tph/employees
+
+### 5.1 — TPH: фільтрація менеджерів OfType<ManagerTph>()
+GET {{host}}/api/ch05/tph/managers
+
+### 5.1 — TPH: додати нового менеджера в єдину таблицю
+POST {{host}}/api/ch05/tph/managers
+Content-Type: application/json
+
+{
+  "name": "Дарина Коваль",
+  "email": "daryna@example.com",
+  "company": "Google",
+  "salary": 6000,
+  "department": "AI Research",
+  "annualBonus": 2500
+}
+
+### 5.2 — TPT: поліморфний запит усіх рахунків (LEFT JOIN)
+GET {{host}}/api/ch05/tpt/all
+
+### 5.2 — TPT: лише кредитні рахунки (INNER JOIN)
+GET {{host}}/api/ch05/tpt/credits
+
+### 5.2 — TPT: створити кредитний рахунок (вставка у 2 таблиці)
+POST {{host}}/api/ch05/tpt/credit-account
+Content-Type: application/json
+
+{
+  "owner": "Юрій Ткач",
+  "balance": 3500,
+  "creditLimit": 10000
+}
+
+### 5.3 — TPC: поліморфний запит усіх пристроїв (UNION ALL)
+GET {{host}}/api/ch05/tpc/all
+
+### 5.3 — TPC: вибірка лише смартфонів (пряме читання без JOIN)
+GET {{host}}/api/ch05/tpc/smartphones
+
+### 5.3 — TPC: додати новий смартфон
+POST {{host}}/api/ch05/tpc/smartphones
+Content-Type: application/json
+
+{
+  "model": "Galaxy S25 Ultra",
+  "price": 1299,
+  "operatingSystem": "Android 15"
+}
+
+### Порівняння стратегій успадкування
+GET {{host}}/api/ch05/comparison/strategies
+
+### DDL-скрипт структури таблиць для всіх 3 стратегій
+GET {{host}}/api/ch05/comparison/create-script
+
+### Відновити дані глави 5
+POST {{host}}/api/ch05/comparison/reset
+
+############################################################
 # Глава 6. Запити та LINQ to Entities
 ############################################################
 
@@ -271,3 +351,92 @@ POST {{host}}/api/ch06/bulk-operations/delete-out-of-stock
 
 ### 6.11 — відновити дані глави
 POST {{host}}/api/ch06/bulk-operations/reset
+
+############################################################
+# Глава 7. SQL в Entity Framework Core
+############################################################
+
+### 7.1 — FromSql з інтерполяцією (параметризований, захищений від SQLi)
+GET {{host}}/api/ch07/raw-sql/from-sql-interpolated?minPrice=500
+
+### 7.1 — FromSqlRaw за позиційним параметром
+GET {{host}}/api/ch07/raw-sql/from-sql-raw?maxStock=15
+
+### 7.1 — Компонування LINQ поверх сирого SQL
+GET {{host}}/api/ch07/raw-sql/compose-linq?category=Smartphones
+
+### 7.1 — Скалярний SqlQuery<string> (EF Core 8+)
+GET {{host}}/api/ch07/raw-sql/scalar-query?minPrice=800
+
+### 7.1 — Проєкція у неключову сутність (Keyless GROUP BY)
+GET {{host}}/api/ch07/raw-sql/keyless-group-by
+
+### 7.1 — Пряме виконання DML ExecuteSql
+POST {{host}}/api/ch07/raw-sql/execute-sql?category=Smartphones&bonusStock=5
+
+### 7.2 — Скалярна функція dbo.fn_CalculateDiscount всередині LINQ
+GET {{host}}/api/ch07/stored-functions/scalar-function?discountPercent=20
+
+### 7.2 — Таблична функція (TVF) dbo.fn_GetProductsByPriceRange
+GET {{host}}/api/ch07/stored-functions/table-valued-function?minPrice=300&maxPrice=1200
+
+### 7.3 — Збережена процедура: вибірка сутностей
+GET {{host}}/api/ch07/stored-procedures/by-category?category=Smartphones
+
+### 7.3 — Збережена процедура: вихідні параметри (OUTPUT)
+GET {{host}}/api/ch07/stored-procedures/output-parameters?minSpent=1000
+
+### 7.3 — Збережена процедура: оновлення цін (DML)
+POST {{host}}/api/ch07/stored-procedures/increase-prices?category=Smartphones&percent=10
+
+### Відновити дані глави 7
+POST {{host}}/api/ch07/stored-procedures/reset
+
+############################################################
+# Глава 8. Додаткові можливості
+############################################################
+
+### 8.1 — Банківські рахунки з токеном RowVersion (Hex)
+GET {{host}}/api/ch08/concurrency/accounts
+
+### 8.1 — Симуляція конфлікту паралелізму (DbUpdateConcurrencyException)
+POST {{host}}/api/ch08/concurrency/simulate-conflict?resolutionStrategy=None
+
+### 8.1 — Вирішення конфлікту за стратегією DatabaseWins
+POST {{host}}/api/ch08/concurrency/simulate-conflict?resolutionStrategy=DatabaseWins
+
+### 8.1 — Вирішення конфлікту за стратегією ClientWins
+POST {{host}}/api/ch08/concurrency/simulate-conflict?resolutionStrategy=ClientWins
+
+### 8.2 — Скомпільований запит за Id (EF.CompileQuery)
+GET {{host}}/api/ch08/compiled-queries/by-id/1
+
+### 8.2 — Асинхронний скомпільований запит (EF.CompileAsyncQuery)
+GET {{host}}/api/ch08/compiled-queries/high-balance?minBalance=3000
+
+### 8.2 — Бенчмарк: стандартний LINQ проти скомпільованого запиту
+GET {{host}}/api/ch08/compiled-queries/benchmark?iterations=100
+
+### 8.3 — Запит до об'єкта SQL Server VIEW (dbo.V_AccountSummary)
+GET {{host}}/api/ch08/views/summary
+
+### 8.3 — LINQ-фільтрація поверх VIEW
+GET {{host}}/api/ch08/views/high-balance?minBalance=3000
+
+### 8.4 — Актуальні версії документів (темпоральна таблиця)
+GET {{host}}/api/ch08/temporal/documents
+
+### 8.4 — Оновити документ (створює новий запис у таблиці історії)
+POST {{host}}/api/ch08/temporal/documents/1/update
+Content-Type: application/json
+
+{
+  "title": "Архітектурний маніфест v2.0",
+  "content": "Оновлена версія: додано підтримку мікросервісів та EF Core 10."
+}
+
+### 8.4 — Повна історія ревізій документа (TemporalAll)
+GET {{host}}/api/ch08/temporal/documents/1/history
+
+### Відновити дані глави 8
+POST {{host}}/api/ch08/temporal/reset

@@ -4,8 +4,14 @@ using EfCoreExamples.Chapter03_Models;
 using EfCoreExamples.Chapter03_Models.Seed;
 using EfCoreExamples.Chapter04_Relationships;
 using EfCoreExamples.Chapter04_Relationships.Seed;
+using EfCoreExamples.Chapter05_Inheritance;
+using EfCoreExamples.Chapter05_Inheritance.Seed;
 using EfCoreExamples.Chapter06_Queries;
 using EfCoreExamples.Chapter06_Queries.Seed;
+using EfCoreExamples.Chapter07_Sql;
+using EfCoreExamples.Chapter07_Sql.Seed;
+using EfCoreExamples.Chapter08_Advanced;
+using EfCoreExamples.Chapter08_Advanced.Seed;
 using Microsoft.EntityFrameworkCore;
 
 namespace EfCoreExamples.Infrastructure;
@@ -63,10 +69,25 @@ public static class DatabaseBootstrapper
             lazyLoading.Database.EnsureCreated();
             LazyLoadingSeeder.Seed(lazyLoading);
 
+            // ── Глава 5. Успадкування ─────────────────────────────────────────
+            var inheritance = services.GetRequiredService<InheritanceContext>();
+            inheritance.Database.EnsureCreated();
+            InheritanceSeeder.Seed(inheritance);
+
             // ── Глава 6. Запити та LINQ to Entities ───────────────────────────
             var queries = services.GetRequiredService<QueriesContext>();
             queries.Database.EnsureCreated();
             QueriesSeeder.Seed(queries);
+
+            // ── Глава 7. SQL в EF Core ────────────────────────────────────────
+            var sql = services.GetRequiredService<SqlContext>();
+            sql.Database.EnsureCreated();
+            SqlSeeder.Seed(sql);
+
+            // ── Глава 8. Додаткові можливості ─────────────────────────────────
+            var advanced = services.GetRequiredService<AdvancedContext>();
+            advanced.Database.EnsureCreated();
+            AdvancedSeeder.Seed(advanced);
 
             logger.LogInformation("Навчальні бази даних готові.");
         }
