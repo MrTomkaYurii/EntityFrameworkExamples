@@ -1,3 +1,7 @@
 <Solution>
+  <Folder Name="/docs/">
+    <File Path="docs/Architecture-Presentation.md" />
+    <File Path="docs/EFCore-Architecture-Guide.md" />
+  </Folder>
   <Project Path="EfCoreExamples.csproj" />
 </Solution>

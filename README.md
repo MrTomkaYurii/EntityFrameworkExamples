@@ -40,7 +40,14 @@ dotnet run
 - **Коментарі українською, код — англійською.**
 - **Скидання даних.** Глави, приклади яких змінюють дані, мають ендпоінт `POST .../reset`.
 
-## Глави
+## 📚 Навчальні матеріали та Архітектурні посібники
+
+Для швидкого занурення в теорію та архітектурні патерни підготовлено інтерактивні матеріали:
+
+- 🎓 **[Інтерактивна презентація архітектури EF Core](docs/Architecture-Presentation.md)** — майстер-клас на 25 слайдів з клікабельною навігацією, життєвими аналогіями, порівняльними таблицями, Mermaid-діаграмами та прямими посиланнями на код проєкту.
+- 📘 **[Глибокий технічний довідник та інженерна шпаргалка](docs/EFCore-Architecture-Guide.md)** — розбір внутрішніх механік `DbContext` та `ChangeTracker`, конвеєра збереження даних (Save Pipeline), матриця CLI-команд `dotnet ef`, стратегії оптимізації продуктивності та обробка конкурентності.
+
+## Глави курсу Metanit
 
 | Глава | Тема | Стан | Деталі |
 |---|---|---|---|
@@ -58,19 +65,24 @@ dotnet run
 ## Структура
 
 ```
-EfCoreExamples.csproj        один проєкт, net10.0
+EfCoreExamples.csproj        один проєкт, net10.0 (OpenAPI, Scalar, SqlServer)
 Program.cs                    мінімальний хост: контролери + OpenAPI/Scalar + реєстрація DbContext
 appsettings.json             рядки підключення до LocalDB (по одному на главу)
-requests.http                готові HTTP-запити
+requests.http                готові HTTP-запити для тестування ендпоінтів
+docs/
+  Architecture-Presentation.md  інтерактивна презентація майстер-класу (25 слайдів з Mermaid)
+  EFCore-Architecture-Guide.md  глибокий технічний довідник та інженерна шпаргалка
 Infrastructure/
-  DatabaseBootstrapper.cs    створення + наповнення всіх БД при старті
+  DatabaseBootstrapper.cs    автоматичне створення + наповнення всіх БД при старті
   QueryPresentation.cs       хелпер { sql, count, data } для навчальних запитів
-Chapter0N_Xxx/
-  README.md                  конспект глави: урок metanit → контролер → ендпоінт
-  Models/                    сутності
-  XxxContext.cs              DbContext глави
-  Seed/                      початкові дані
-  Controllers/               по одному контролеру на групу уроків
+Chapter01_Introduction/      Вступ, CRUD, конфігурація, логування, міграції
+Chapter02_Providers/         Провайдери СУБД, стійкість зв'язку (EnableRetryOnFailure)
+Chapter03_Models/            Моделі, Fluent API, анотації, ключі, індекси, backing fields
+Chapter04_Relationships/     1:1, 1:N, N:M, Owned Types, Complex Types, Lazy Loading
+Chapter05_Inheritance/       Успадкування: TPH, TPT, TPC стратегії зіставлення
+Chapter06_Queries/           LINQ, AsNoTracking, фільтри моделі, ExecuteUpdate/Delete
+Chapter07_Sql/               Сирий SQL (FromSql), збережені функції (UDF), процедури
+Chapter08_Advanced/          Оптимістичний паралелізм (RowVersion), Views, Temporal Tables
 ```
 
 ## Скидання всіх баз даних
